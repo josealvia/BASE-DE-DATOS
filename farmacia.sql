@@ -1,11 +1,12 @@
+
 /*==============================================================*/
 /* Table: CLIENTES                                              */
 /*==============================================================*/
 create table CLIENTES (
    CODIGO_CLIENTE       INT4                 not null,
-   NOMBRE_CLIENTE       CHAR(30)             null,
-   DIRECCION_CLIENTE    CHAR(30)             null,
-   TELEFONO_CLIENTE     CHAR(30)             null,
+   NOMBRE_CLIENTE       CHAR(30),             
+   DIRECCION_CLIENTE    CHAR(30),             
+   TELEFONO_CLIENTE     CHAR(30),             
    constraint PK_CLIENTES primary key (CODIGO_CLIENTE)
 );
 
@@ -19,16 +20,17 @@ create table COMPRA_INSUMO (
 );
 
 /*==============================================================*/
-/* Table: DETALLE_VENTA                                         */
+/* Table: DETALLE_DE_VENTA                                      */
 /*==============================================================*/
-create table DETALLE_VENTA (
+create table DETALLE_DE_VENTA (
    CODIGO_PRODUCTO      INT4                 not null,
    ID_VENTAS            INT4                 not null,
-   CANTIDAD_PRODUCTO    INT4                 null,
-   PRECIO_PRODUCTO      FLOAT8               null,
+   CANTIDAD_PRODUCTO    INT4,
+   PRECIO_PRODUCTO      FLOAT8,
    ID_DETALLE_VENTA     INT4                 not null,
-   TOTAL_DETALLE        FLOAT8               null,
-   constraint PK_DETALLE_VENTA primary key (ID_DETALLE_VENTA)
+   TOTAL_DETALLE        FLOAT8,
+   FECHA_VENTA          DATE,
+   constraint PK_DETALLE_DE_VENTA primary key (ID_DETALLE_VENTA)
 );
 
 /*==============================================================*/
@@ -36,7 +38,7 @@ create table DETALLE_VENTA (
 /*==============================================================*/
 create table ESTADO (
    ID_ESTADO            INT4                 not null,
-   NOMBRE_ESTADO        CHAR(20)             null,
+   NOMBRE_ESTADO        CHAR(20),
    constraint PK_ESTADO primary key (ID_ESTADO)
 );
 
@@ -46,11 +48,11 @@ create table ESTADO (
 create table PRODUCTOS (
    CODIGO_PRODUCTO      INT4                 not null,
    CODIGO_PROVEEDOR     INT4                 not null,
-   NOMBRE_PRODUCTO      CHAR(30)             null,
-   COSTO_PRODUCTO       FLOAT8               null,
-   PRECIO_PRODUCTO      FLOAT8               null,
-   F_VENCIMIENTO_PRODUCTO DATE                 null,
-   STOCK_PRODUCTO       INT4                 null,
+   NOMBRE_PRODUCTO      CHAR(30),
+   COSTO_PRODUCTO       FLOAT8,
+   PRECIO_PRODUCTO      FLOAT8,
+   F_VENCIMIENTO_PRODUCTO DATE,
+   STOCK_PRODUCTO       INT4,
    constraint PK_PRODUCTOS primary key (CODIGO_PRODUCTO)
 );
 
@@ -59,9 +61,9 @@ create table PRODUCTOS (
 /*==============================================================*/
 create table PROVEEDORES (
    CODIGO_PROVEEDOR     INT4                 not null,
-   NOMBRE_PROVEEDOR     CHAR(30)             null,
-   DIRECCION_PROVEEDOR  CHAR(40)             null,
-   TELEFONO_PROVEEDOR   CHAR(20)             null,
+   NOMBRE_PROVEEDOR     CHAR(50),
+   DIRECCION_PROVEEDOR  CHAR(40),
+   TELEFONO_PROVEEDOR   CHAR(20),
    constraint PK_PROVEEDORES primary key (CODIGO_PROVEEDOR)
 );
 
@@ -70,8 +72,8 @@ create table PROVEEDORES (
 /*==============================================================*/
 create table SUCURSALES (
    CODIGO_SUCURSAL      INT4                 not null,
-   DIRECCION_SUCURSAL   CHAR(40)             null,
-   TELEFONO_SUCURSAL    CHAR(20)             null,
+   DIRECCION_SUCURSAL   CHAR(40),
+   TELEFONO_SUCURSAL    CHAR(20),
    constraint PK_SUCURSALES primary key (CODIGO_SUCURSAL)
 );
 
@@ -92,10 +94,11 @@ create table VENDEDOR (
    CODIGO_VENDEDOR      INT4                 not null,
    CODIGO_SUCURSAL      INT4                 not null,
    ID_ESTADO            INT4                 not null,
-   NOMBRES_VENDEDOR     CHAR(30)             null,
-   APELLIDOS_VENDEDOR   CHAR(30)             null,
-   F_NACIMIENTO_VENDEDOR DATE                 null,
-   F_INGRESO_LABORAL    DATE                 null,
+   NOMBRES_VENDEDOR     CHAR(30),
+   APELLIDOS_VENDEDOR   CHAR(30),
+   F_NACIMIENTO_VENDEDOR DATE,
+   F_INGRESO_LABORAL    DATE,
+   TELF_VENDEDOR        FLOAT,
    constraint PK_VENDEDOR primary key (CODIGO_VENDEDOR)
 );
 
@@ -106,7 +109,7 @@ create table VENTAS (
    ID_VENTAS            INT4                 not null,
    CODIGO_VENDEDOR      INT4                 not null,
    CODIGO_CLIENTE       INT4                 not null,
-   DESCUENTO_VENTAS     CHAR(10)             null,
+   DESCUENTO_VENTAS     CHAR(10),
    constraint PK_VENTAS primary key (ID_VENTAS)
 );
 
@@ -115,12 +118,12 @@ alter table COMPRA_INSUMO
       references SUCURSALES (CODIGO_SUCURSAL)
       on delete restrict on update restrict;
 
-alter table DETALLE_VENTA
+alter table DETALLE_DE_VENTA
    add constraint FK_DETALLE__RELATIONS_VENTAS foreign key (ID_VENTAS)
       references VENTAS (ID_VENTAS)
       on delete restrict on update restrict;
 
-alter table DETALLE_VENTA
+alter table DETALLE_DE_VENTA
    add constraint FK_DETALLE__RELATIONS_PRODUCTO foreign key (CODIGO_PRODUCTO)
       references PRODUCTOS (CODIGO_PRODUCTO)
       on delete restrict on update restrict;
@@ -159,4 +162,5 @@ alter table VENTAS
    add constraint FK_VENTAS_VENDE_VENDEDOR foreign key (CODIGO_VENDEDOR)
       references VENDEDOR (CODIGO_VENDEDOR)
       on delete restrict on update restrict;
+
 
