@@ -67,7 +67,7 @@ insert into productos values(20,4,'Aciclovir','30.00','0.50','10/08/2022',60)
 begin;
 insert into clientes values(1,'Daniel Delgado Lucas','Montecristi-Los Bajos',098534578 );
 insert into ventas values(1,4,1,'10%');
-insert into detalle_venta values(15,1,10,0.20,1,0.0);
+insert into detalle_venta values(15,1,10,0.20,1,0.0,'20/10/2020');
 update detalle_venta set total_detalle=cantidad_producto*precio_producto where id_detalle_venta=1;
 update productos set stock_producto=stock_producto-10 where codigo_producto=15;
 commit;
@@ -76,7 +76,7 @@ commit;
 begin;
 insert into clientes values(2,'Andres Anchundia Alvia','Montecristi-Calle Eloy Alfaro','0989987562');
 insert into ventas values(2,8,2,'0%');
-insert into detalle_venta values(8,1,7,0.48,2,0.0);
+insert into detalle_venta values(8,1,7,0.48,2,0.0,'25/11/2020');
 update detalle_venta set total_detalle=cantidad_producto*precio_producto where id_detalle_venta=2;
 update productos set stock_producto=stock_producto-7 where codigo_producto=8;
 commit;
@@ -84,7 +84,7 @@ commit;
 begin;
 insert into clientes values(4,'Eduardo Lopez Delgado','Manta calle 13 Av 12','098896354');
 insert into ventas values(4,5,4,'0%');
-insert into detalle_venta values(5,4,8,0.20,4,0.0);
+insert into detalle_venta values(5,4,8,0.20,4,0.0,'26/11/2020');
 update detalle_venta set total_detalle=cantidad_producto*precio_producto where id_detalle_venta=4;
 update productos set stock_producto=stock_producto-8 where codigo_producto=5;
 commit;
@@ -92,7 +92,7 @@ commit;
 begin;
 insert into clientes values(5,'David Lucas','Manta calle 13 Av 12','098847354');
 insert into ventas values(5,2,5,'0%');
-insert into detalle_venta values(13,5,4,0.48,5,0.0);
+insert into detalle_venta values(13,5,4,0.48,5,0.0,'30/11/2020');
 update detalle_venta set total_detalle=cantidad_producto*precio_producto where id_detalle_venta=5;
 update productos set stock_producto=stock_producto-4 where codigo_producto=13;
 commit;
@@ -100,7 +100,7 @@ commit;
 begin;
 insert into clientes values(6,'Oscar Delgado','Los Bajos','0985456354');
 insert into ventas values(6,6,6,'0%');
-insert into detalle_venta values(16,6,7,0.50,6,0.0);
+insert into detalle_venta values(16,6,7,0.50,6,0.0,'10/12/2020');
 update detalle_venta set total_detalle=cantidad_producto*precio_producto where id_detalle_venta=6;
 update productos set stock_producto=stock_producto-7 where codigo_producto=16;
 commit;
@@ -108,7 +108,7 @@ commit;
 begin;
 insert into clientes values(7,'Maria Anchundia','Montecristi','098896400');
 insert into ventas values(7,3,7,'0%');
-insert into detalle_venta values(1,7,6,0.50,7,0.0);
+insert into detalle_venta values(1,7,6,0.50,7,0.0,'5/12/2020');
 update detalle_venta set total_detalle=cantidad_producto*precio_producto where id_detalle_venta=7;
 update productos set stock_producto=stock_producto-1 where codigo_producto=1;
 commit;
@@ -124,10 +124,12 @@ commit;
 begin;
 insert into clientes values(9,'Nancy lucas','Montecristi','098776354');
 insert into ventas values(9,4,9,'5%');
-insert into detalle_venta values(12,9,20,0.49,9,0.0);
+insert into detalle_venta values(12,9,20,0.49,9,0.0,'10/12/2020');
 update detalle_venta set total_detalle=cantidad_producto*precio_producto where id_detalle_venta=9;
 update productos set stock_producto=stock_producto-20 where codigo_producto=12;
 commit;
+
+
 
 
 /*vendedor con mayor experiencia en sucursal 1*/
@@ -249,3 +251,5 @@ inner join sucursales on sucursales.codigo_sucursal = vendedor.codigo_sucursal
 group by productos.nombre_producto , detalle_venta.cantidad_producto
 order by detalle_venta.cantidad_producto desc
 limit 1;
+
+
