@@ -1,36 +1,27 @@
 
 /*==============================================================*/
-/* Table: CLIENTES                                              */
+/* Table: CLIENTE                                               */
 /*==============================================================*/
-create table CLIENTES (
+create table CLIENTE (
    CODIGO_CLIENTE       INT4                 not null,
-   NOMBRE_CLIENTE       CHAR(30),             
-   DIRECCION_CLIENTE    CHAR(30),             
-   TELEFONO_CLIENTE     CHAR(30),             
-   constraint PK_CLIENTES primary key (CODIGO_CLIENTE)
+   NOMBRE_CLIENTE       CHAR(30),
+   DIRECCION_CLIENTE    CHAR(30),
+   TELEFONO_CLIENTE     CHAR(30),
+   constraint PK_CLIENTE primary key (CODIGO_CLIENTE)
 );
 
 /*==============================================================*/
-/* Table: COMPRA_INSUMO                                         */
+/* Table: DETALLE_VENTA                                         */
 /*==============================================================*/
-create table COMPRA_INSUMO (
-   ID_COMPRA_INSUMO     INT4                 not null,
-   CODIGO_SUCURSAL      INT4                 not null,
-   constraint PK_COMPRA_INSUMO primary key (ID_COMPRA_INSUMO)
-);
-
-/*==============================================================*/
-/* Table: DETALLE_DE_VENTA                                      */
-/*==============================================================*/
-create table DETALLE_DE_VENTA (
+create table DETALLE_VENTA (
    CODIGO_PRODUCTO      INT4                 not null,
-   ID_VENTAS            INT4                 not null,
+   ID_VENTA             INT4                 not null,
    CANTIDAD_PRODUCTO    INT4,
    PRECIO_PRODUCTO      FLOAT8,
    ID_DETALLE_VENTA     INT4                 not null,
    TOTAL_DETALLE        FLOAT8,
    FECHA_VENTA          DATE,
-   constraint PK_DETALLE_DE_VENTA primary key (ID_DETALLE_VENTA)
+   constraint PK_DETALLE_VENTA primary key (ID_DETALLE_VENTA)
 );
 
 /*==============================================================*/
@@ -43,9 +34,9 @@ create table ESTADO (
 );
 
 /*==============================================================*/
-/* Table: PRODUCTOS                                             */
+/* Table: PRODUCTO                                              */
 /*==============================================================*/
-create table PRODUCTOS (
+create table PRODUCTO (
    CODIGO_PRODUCTO      INT4                 not null,
    CODIGO_PROVEEDOR     INT4                 not null,
    NOMBRE_PRODUCTO      CHAR(30),
@@ -53,28 +44,28 @@ create table PRODUCTOS (
    PRECIO_PRODUCTO      FLOAT8,
    F_VENCIMIENTO_PRODUCTO DATE,
    STOCK_PRODUCTO       INT4,
-   constraint PK_PRODUCTOS primary key (CODIGO_PRODUCTO)
+   constraint PK_PRODUCTO primary key (CODIGO_PRODUCTO)
 );
 
 /*==============================================================*/
-/* Table: PROVEEDORES                                           */
+/* Table: PROVEEDOR                                             */
 /*==============================================================*/
-create table PROVEEDORES (
+create table PROVEEDOR (
    CODIGO_PROVEEDOR     INT4                 not null,
    NOMBRE_PROVEEDOR     CHAR(50),
    DIRECCION_PROVEEDOR  CHAR(40),
    TELEFONO_PROVEEDOR   CHAR(20),
-   constraint PK_PROVEEDORES primary key (CODIGO_PROVEEDOR)
+   constraint PK_PROVEEDOR primary key (CODIGO_PROVEEDOR)
 );
 
 /*==============================================================*/
-/* Table: SUCURSALES                                            */
+/* Table: SUCURSAL                                              */
 /*==============================================================*/
-create table SUCURSALES (
+create table SUCURSAL (
    CODIGO_SUCURSAL      INT4                 not null,
    DIRECCION_SUCURSAL   CHAR(40),
    TELEFONO_SUCURSAL    CHAR(20),
-   constraint PK_SUCURSALES primary key (CODIGO_SUCURSAL)
+   constraint PK_SUCURSAL primary key (CODIGO_SUCURSAL)
 );
 
 /*==============================================================*/
@@ -103,44 +94,39 @@ create table VENDEDOR (
 );
 
 /*==============================================================*/
-/* Table: VENTAS                                                */
+/* Table: VENTA                                                 */
 /*==============================================================*/
-create table VENTAS (
-   ID_VENTAS            INT4                 not null,
+create table VENTA (
+   ID_VENTA             INT4                 not null,
    CODIGO_VENDEDOR      INT4                 not null,
    CODIGO_CLIENTE       INT4                 not null,
-   DESCUENTO_VENTAS     CHAR(10),
-   constraint PK_VENTAS primary key (ID_VENTAS)
+   DESCUENTO_VENTA      CHAR(10),
+   constraint PK_VENTA primary key (ID_VENTA)
 );
 
-alter table COMPRA_INSUMO
-   add constraint FK_COMPRA_I_RELATIONS_SUCURSAL foreign key (CODIGO_SUCURSAL)
-      references SUCURSALES (CODIGO_SUCURSAL)
+alter table DETALLE_VENTA
+   add constraint FK_DETALLE__RELATIONS_VENTA foreign key (ID_VENTA)
+      references VENTA (ID_VENTA)
       on delete restrict on update restrict;
 
-alter table DETALLE_DE_VENTA
-   add constraint FK_DETALLE__RELATIONS_VENTAS foreign key (ID_VENTAS)
-      references VENTAS (ID_VENTAS)
-      on delete restrict on update restrict;
-
-alter table DETALLE_DE_VENTA
+alter table DETALLE_VENTA
    add constraint FK_DETALLE__RELATIONS_PRODUCTO foreign key (CODIGO_PRODUCTO)
-      references PRODUCTOS (CODIGO_PRODUCTO)
+      references PRODUCTO (CODIGO_PRODUCTO)
       on delete restrict on update restrict;
 
-alter table PRODUCTOS
+alter table PRODUCTO
    add constraint FK_PRODUCTO_RELATIONS_PROVEEDO foreign key (CODIGO_PROVEEDOR)
-      references PROVEEDORES (CODIGO_PROVEEDOR)
+      references PROVEEDOR (CODIGO_PROVEEDOR)
       on delete restrict on update restrict;
 
 alter table SUCURSAL_PROVEEDOR
    add constraint FK_SUCURSAL_COMPRA_SUCURSAL foreign key (CODIGO_SUCURSAL)
-      references SUCURSALES (CODIGO_SUCURSAL)
+      references SUCURSAL (CODIGO_SUCURSAL)
       on delete restrict on update restrict;
 
 alter table SUCURSAL_PROVEEDOR
    add constraint FK_SUCURSAL_COMPRA2_PROVEEDO foreign key (CODIGO_PROVEEDOR)
-      references PROVEEDORES (CODIGO_PROVEEDOR)
+      references PROVEEDOR (CODIGO_PROVEEDOR)
       on delete restrict on update restrict;
 
 alter table VENDEDOR
@@ -150,16 +136,16 @@ alter table VENDEDOR
 
 alter table VENDEDOR
    add constraint FK_VENDEDOR_TIENE_SUCURSAL foreign key (CODIGO_SUCURSAL)
-      references SUCURSALES (CODIGO_SUCURSAL)
+      references SUCURSAL (CODIGO_SUCURSAL)
       on delete restrict on update restrict;
 
-alter table VENTAS
-   add constraint FK_VENTAS_RELATIONS_CLIENTES foreign key (CODIGO_CLIENTE)
-      references CLIENTES (CODIGO_CLIENTE)
+alter table VENTA
+   add constraint FK_VENTA_RELATIONS_CLIENTE foreign key (CODIGO_CLIENTE)
+      references CLIENTE (CODIGO_CLIENTE)
       on delete restrict on update restrict;
 
-alter table VENTAS
-   add constraint FK_VENTAS_VENDE_VENDEDOR foreign key (CODIGO_VENDEDOR)
+alter table VENTA
+   add constraint FK_VENTA_VENDE_VENDEDOR foreign key (CODIGO_VENDEDOR)
       references VENDEDOR (CODIGO_VENDEDOR)
       on delete restrict on update restrict;
 
